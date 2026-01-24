@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    # return jsonify({"error": "test error"}), 500
+    return jsonify({"error": "test error"}), 500
     try:
         form_data = request.json
 
