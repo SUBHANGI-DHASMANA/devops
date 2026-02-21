@@ -1,0 +1,55 @@
+sudo apt update
+sudo apt install python3-pip python3-venv nginx nodejs npm -y
+
+scp -i aws-assignment.pem -r /Users/subhangidhasmana/Documents/devops/devops/AWS/backend backend ubuntu@ec2-13-127-174-13.ap-south-1.compute.amazonaws.com:~/
+
+scp -i aws-assignment.pem -r /Users/subhangidhasmana/Documents/devops/devops/AWS/frontend frontend ubuntu@ec2-3-110-88-138.ap-south-1.compute.amazonaws.com:~/
+
+
+backend:
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+nohup gunicorn app:app --bind 0.0.0.0:8000 > gunicorn.log 2>&1 &
+
+frontend:
+Update Express to Call Backend Public IP
+
+cd frontend
+npm i
+sudo nano app.js
+
+sudo npm install -g pm2
+pm2 start app.js
+pm2 save
+pm2 startup
+
+
+server {
+   listen 80;
+   #server_name aws-assignment-2.work.gd;
+
+
+   location / {
+           proxy_pass http://127.0.0.1:3000;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+       }
+}
+
+sudo rm /etc/nginx/sites-enabled/default
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+
+docker tag aws-backend:latest 872675509258.dkr.ecr.ap-south-1.amazonaws.com/aws-assignment-backend:latest
+
+docker tag aws-frontend:latest 872675509258.dkr.ecr.ap-south-1.amazonaws.com/aws-assignment-frontend:latest
+
+docker push 872675509258.dkr.ecr.ap-south-1.amazonaws.com/aws-assignment-backend:latest

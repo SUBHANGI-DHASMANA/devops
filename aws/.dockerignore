@@ -1,0 +1,25 @@
+# Node
+node_modules
+
+# Python
+venv
+__pycache__
+*.pyc
+
+# Git
+.git
+.gitignore
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Docker
+Dockerfile
+docker-compose.yml

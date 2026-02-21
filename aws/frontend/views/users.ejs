@@ -1,0 +1,15 @@
+<h2>Users List</h2>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+
+    <% users.forEach(user => { %>
+        <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+        </tr>
+    <% }) %>
+</table>
